@@ -1,0 +1,150 @@
+---
+title: "Creating reproducible spreadsheets"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Creating reproducible spreadsheets}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+rapid.spreadsheets package can help you automate production of spreadsheets that follow accessibility guidelines. Here you can see and example of producing simple reference tables with Cover Sheet, Notes and a few tables.
+
+```{r setup}
+library(rapid.spreadsheets)
+library(dplyr)
+library(openxlsx)
+```
+
+First you need to create a standard openxlsx workbook and then you can use functions from rapid.spreadsheets package to add tables with appropriate formatting.
+
+```{r}
+wb <- createWorkbook()
+```
+
+We use following .txt file to populate our example cover sheet, but you can also use a standard data.frame in R. It should only contain a single column.
+
+```{r}
+cover_sheet_text <- read.csv(
+  "cover_sheet.txt",
+  header = FALSE,
+  sep = "\t", 
+  fileEncoding = "UTF-8-BOM")
+cover_sheet_text
+```
+The iformation contained in cover sheets and notes is often static, but usually you need to update some parts of it - to help automate this you can use a replace argument in the function.
+
+```{r}
+replacements <- data.frame(
+  replace = c("!release_date!", "!copyright!"),
+  with = c(" 5 September 2022", "2022"))
+```
+
+You can easily add links to your cover sheet by creating a data.frame that contains rows and links column. Rows should indicate which row in the cover sheet data frame contains the corresponding link. Website urls need to be stored as characters. When you include email address simply add "mailto:" in front of email address.
+
+```{r}
+cover_sheet_links <- data.frame(
+  rows = c(15, 18),
+  links = c("https://github.com/RAPID-ONS", "mailto:email@email.gmail.com"))
+```
+ 
+Now you can create cover sheet with replacements and links using create_cover_sheet function.
+
+```{r}
+create_cover_sheet(
+  wb = wb,
+  text_df = cover_sheet_text,
+  subheadings = c(5, 9, 16, 23, 34, 40, 44, 54, 56), # rows with subheadings
+  hyperlinks = cover_sheet_links,
+  rows_to_bold = c(2:4, 45), # rows to apply bold font
+  replacements = replacements
+)
+```
+
+# Check how the workbook looks like (optional)
+openxlsx::openXL(wb)
+
+# Contents tab ####
+
+# Contents text needs to be a table with two columns. See example in
+# examples_spreadsheet_files folder. You can also create a data frame.
+contents_text <- read.csv(
+  contents_filepath,
+  header = TRUE,
+  sep = "\t",
+  quote = "",
+  fileEncoding = "UTF-8-BOM",
+  check.names = FALSE)
+
+# Optionally it can also have a third column with links
+contents_text$"Related links" <- c(rep(NA, 4), "link",
+                                   NA, "GSS service", NA, NA)
+
+# To add links you also need to specify which rows of the table they are and
+# where should they be linking to.
+hyperlinks <- data.frame(
+  rows = c(5, 7),
+  links = c("https://www.ons.gov.uk/peoplepopulationandcommunity",
+            "https://gss.civilservice.gov.uk/policy-store"))
+
+# Add contents worksheet
+halefunctionlib::create_contents_notes(
+  wb = wb,
+  df = contents_text,
+  additional_text = c("sub one", "sub two", "sub three"),
+  hyperlinks = hyperlinks
+)
+
+# Check how the workbook looks like (optional)
+openxlsx::openXL(wb)
+
+# Notes tab ####
+notes_text <- read.csv(
+  notes_filepath,
+  header = TRUE,
+  sep = "\t",
+  quote = "",
+  fileEncoding = "UTF-8-BOM",
+  check.names = FALSE)
+
+halefunctionlib::create_contents_notes(
+  wb = wb,
+  df = notes_text,
+  tab_name = "Notes",
+  heading = "Notes",
+  contents_links = FALSE,
+  additional_text = c("Important text on notes", "Different important text")
+)
+
+# Check how the workbook looks like (optional)
+openxlsx::openXL(wb)
+
+# Data table tab ####
+df <- data.frame(
+  Sex = c(rep("males", 4), rep("females", 4)),
+  "Age group" = rep("10 to 14", 8),
+  Deaths = as.character(c(seq(6.25, 7.75, 0.25), 2222.22)),
+  Rate = c(1:6, 1000, "[x]"),
+  check.names = FALSE # use this to retain spaces in column names
+)
+
+halefunctionlib::create_data_table_tab(
+  wb,
+  df,
+  tab_name = "Table_Y",
+  num_char_cols = c(3, 4),
+  no_decimal = 4,
+  two_decimal = 3
+)
+
+
+# You can check how your workbook looks like using the following function:
+openxlsx::openXL(wb)
+# To save the file use openxlsx::saveWorkbook() function.
+
