@@ -11,7 +11,7 @@ test_that("Basic table is created with default values", {
       X2 = c(NA, NA, "d", df$d)
     )
   )
-  expect_equivalent(wb$colWidths[[1]], c("10", "10"))
+  expect_equal(wb$colWidths[[1]], c("10", "10"), ignore_attr = TRUE)
   expect_equal(
     getBaseFont(wb),
     list(

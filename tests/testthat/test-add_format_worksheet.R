@@ -52,38 +52,45 @@ test_that("Worksheet formatting style is set as expected", {
       name = list(val = "Arial")
     )
   )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$bold), "address"],
-    data.frame(address = c("A1", "A3", "B3"))
+    data.frame(address = c("A1", "A3", "B3")),
+    ignore_attr = TRUE
   )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$size == 12), "address"],
-    data.frame(address = c("A2", "A3", "B3", "A4", "B4", "A5", "B5"))
+    data.frame(address = c("A2", "A3", "B3", "A4", "B4", "A5", "B5")),
+    ignore_attr = TRUE
   )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$size == 16), "address"],
-    data.frame(address = c("A1"))
+    data.frame(address = c("A1")),
+    ignore_attr = TRUE
   )
 
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$border$right$style == "thin"),
       "address"],
-    data.frame(address = cells_with_borders)
+    data.frame(address = cells_with_borders),
+    ignore_attr = TRUE
   )
 
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$border$left$style == "thin"),
       "address"],
-    data.frame(address = cells_with_borders)
+    data.frame(address = cells_with_borders),
+    ignore_attr = TRUE
   )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$border$top$style == "thin"),
       "address"],
-    data.frame(address = cells_with_borders)
+    data.frame(address = cells_with_borders),
+    ignore_attr = TRUE
   )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$border$bottom$style == "thin"),
       "address"],
-    data.frame(address = cells_with_borders)
+    data.frame(address = cells_with_borders),
+    ignore_attr = TRUE
   )
 })

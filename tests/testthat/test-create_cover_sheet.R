@@ -1,12 +1,12 @@
 test_that("Function works for without optional args", {
   wb <- openxlsx::createWorkbook()
   text_df <- data.frame(X1 = c("a", "b", "c", "d", "e"))
-  halefunctionlib::create_cover_sheet(wb = wb, text_df = text_df)
+  create_cover_sheet(wb = wb, text_df = text_df)
 
   expect_equal(wb$sheet_names, "Cover_sheet")
   expect_equal(read.xlsx(wb, 1, colNames = FALSE), text_df)
-  expect_equivalent(wb$rowHeights[[1]], "30")
-  expect_equivalent(wb$colWidths[[1]], "130")
+  expect_equal(wb$rowHeights[[1]], "30", ignore_attr = TRUE)
+  expect_equal(wb$colWidths[[1]], "130", ignore_attr = TRUE)
   expect_equal(
     getBaseFont(wb),
     list(
@@ -34,7 +34,7 @@ test_that("Function runs with optional arguments", {
   replaced_df <- data.frame(
     X1 = c("a", "b replaced", "c replaced", "d", "e", "f", "ONS", "email")
   )
-  halefunctionlib::create_cover_sheet(
+  create_cover_sheet(
     wb = wb,
     tab_name = "Cool_sheet",
     text_df = text_df,
@@ -48,8 +48,8 @@ test_that("Function runs with optional arguments", {
 
   expect_equal(wb$sheet_names, "Cool_sheet")
   expect_equal(read.xlsx(wb, 1, colNames = FALSE), replaced_df)
-  expect_equivalent(wb$rowHeights[[1]], c("40", "40"))
-  expect_equivalent(wb$colWidths[[1]], "100")
+  expect_equal(wb$rowHeights[[1]], c("40", "40"), ignore_attr = TRUE)
+  expect_equal(wb$colWidths[[1]], "100", ignore_attr = TRUE)
   expect_equal(
     getBaseFont(wb),
     list(
@@ -69,7 +69,7 @@ test_that("Function formatting style works as expected", {
     rows = c(7, 8),
     links = c("https://www.ons.gov.uk", "mailto:Health.Data@ons.gov.uk")
   )
-  halefunctionlib::create_cover_sheet(
+  create_cover_sheet(
     wb = wb,
     tab_name = "Cool_sheet",
     text_df = text_df,
@@ -84,47 +84,56 @@ test_that("Function formatting style works as expected", {
   formats <- tidyxl::xlsx_formats(fl)
   x <- tidyxl::xlsx_cells(fl)
 
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$bold), "address"],
-    data.frame(address = c("A1", "A3", "A6", "A9"))
+    data.frame(address = c("A1", "A3", "A6", "A9")),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$underline == "single"),
       "address"],
-    data.frame(address = c("A7", "A8"))
+    data.frame(address = c("A7", "A8")),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in%
         which(formats$local$font$color$theme == "hyperlink"),
       "address"],
-    data.frame(address = c("A7", "A8"))
+    data.frame(address = c("A7", "A8")),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$color$rgb == "FF0000FF"),
       "address"],
-    data.frame(address = c("A7", "A8"))
+    data.frame(address = c("A7", "A8")),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$color$rgb == "FF000000"),
       "address"],
-    data.frame(address = c("A1", "A2", "A3", "A4", "A5", "A6", "A9"))
+    data.frame(address = c("A1", "A2", "A3", "A4", "A5", "A6", "A9")),
+    ignore_attr = TRUE
     )
   expect_equal(x$height, c(15, 15, 40, 15, 15, 40, 15, 15, 15))
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$size == 12), "address"],
-    data.frame(address = c("A2", "A4", "A5", "A7",  "A8", "A9"))
+    data.frame(address = c("A2", "A4", "A5", "A7",  "A8", "A9")),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$size == 14), "address"],
-    data.frame(address = c("A3", "A6"))
+    data.frame(address = c("A3", "A6")),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$size == 16), "address"],
-    data.frame(address = c("A1"))
+    data.frame(address = c("A1")),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$name == "Arial"),
       "address"],
-    data.frame(address = paste0("A", 1:9))
+    data.frame(address = paste0("A", 1:9)),
+    ignore_attr = TRUE
     )
 })

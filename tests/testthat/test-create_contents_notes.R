@@ -2,7 +2,7 @@ test_that("Creating contents sheet with default options and a single column", {
 
   wb <- openxlsx::createWorkbook()
   df <- data.frame(Name = c("Cover_sheet", "Contents", "Table_1", "Table_2"))
-  halefunctionlib::create_contents_notes(wb = wb, df = df)
+  create_contents_notes(wb = wb, df = df)
 
   expect_equal(wb$sheet_names, "Contents")
   expect_equal(
@@ -10,7 +10,7 @@ test_that("Creating contents sheet with default options and a single column", {
     data.frame(X1 = c("Table of contents", "This worksheet contains 1 table", "Name"))
     )
   expect_identical(is.list(wb$rowHeights[[1]]), TRUE)
-  expect_equivalent(wb$colWidths[[1]], c("20", "20"))
+  expect_equal(wb$colWidths[[1]], c("20", "20"), ignore_attr = TRUE)
   expect_equal(
     getBaseFont(wb),
     list(size = list(val = "12"),
@@ -24,7 +24,7 @@ test_that("Create contents formats excel cells as expected", {
 
   wb <- openxlsx::createWorkbook()
   df <- data.frame(Name = c("Cover_sheet", "Contents", "Table_1", "Table_2"))
-  halefunctionlib::create_contents_notes(wb = wb, df = df)
+  create_contents_notes(wb = wb, df = df)
   fl <- tempfile(fileext = ".xlsx")
   openxlsx::saveWorkbook(wb, file = fl, overwrite = TRUE)
   formats <- tidyxl::xlsx_formats(fl)
@@ -36,45 +36,53 @@ test_that("Create contents formats excel cells as expected", {
   expect_identical(x$formula[7], "=HYPERLINK(\"#'Table_2'!A1\", \"Table_2\")")
   expect_identical(x$height, rep(15, 7))
 
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$bold), "address"],
-    data.frame(address = c("A1", "A3"))
+    data.frame(address = c("A1", "A3")),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in%
         which(formats$local$font$color$theme == "hyperlink"),
       "address"],
-    data.frame(address = paste0("A", 4:7))
+    data.frame(address = paste0("A", 4:7)),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$underline == "single"),
       "address"],
-    data.frame(address = paste0("A", 4:7))
+    data.frame(address = paste0("A", 4:7)),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in%
         which(formats$local$font$color$rgb == "FF0000FF"),
       "address"],
-    data.frame(address = paste0("A", 4:7))
+    data.frame(address = paste0("A", 4:7)),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$color$rgb == "FF000000"),
       "address"],
-    data.frame(address = c(paste0("A", 1:3)))
+    data.frame(address = c(paste0("A", 1:3))),
+    ignore_attr = TRUE
     )
 
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$size == 12), "address"],
-    data.frame(address = paste0("A", 2:7))
+    data.frame(address = paste0("A", 2:7)),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$size == 16), "address"],
-    data.frame(address = c("A1"))
+    data.frame(address = c("A1")),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$name == "Arial"),
       "address"],
-    data.frame(address = paste0("A", 1:7))
+    data.frame(address = paste0("A", 1:7)),
+    ignore_attr = TRUE
     )
 })
 
@@ -84,9 +92,9 @@ test_that("Creating contents sheet with two column has set column widths", {
     Name = c("Cover", "Contents", "Table_1"),
     Description = c("Cover sheet", "Contents", "Some data")
   )
-  halefunctionlib::create_contents_notes(wb = wb, df = df)
+  create_contents_notes(wb = wb, df = df)
 
-  expect_equivalent(wb$colWidths[[1]], c("20", "80"))
+  expect_equal(wb$colWidths[[1]], c("20", "80"), ignore_attr = TRUE)
 })
 
 test_that("Creating contents sheet with three column has set column widths", {
@@ -96,9 +104,9 @@ test_that("Creating contents sheet with three column has set column widths", {
     Description = c("Cover sheet", "Contents", "Some data"),
     Links = c(NA, NA, "link")
   )
-  halefunctionlib::create_contents_notes(wb = wb, df = df)
+  create_contents_notes(wb = wb, df = df)
 
-  expect_equivalent(wb$colWidths[[1]], c("20", "80", "15"))
+  expect_equal(wb$colWidths[[1]], c("20", "80", "15"), ignore_attr = TRUE)
 })
 
 test_that("Creating contents with double (long) heading, additional text and no interlinks", {
@@ -108,7 +116,7 @@ test_that("Creating contents with double (long) heading, additional text and no 
     Description = c("Cover sheet", "Contents", "Table"),
     Links = c(NA, NA, "link")
   )
-  halefunctionlib::create_contents_notes(
+  create_contents_notes(
     wb, df,
     heading = c("Long", "title"),
     contents_links = FALSE,
@@ -137,7 +145,7 @@ test_that("Function runs as expected with third column with hyperlinks", {
     rows = 3:4,
     links = c("https://www.ons.gov.uk/", "mailto:Health.Data@ons.gov.uk")
   )
-  halefunctionlib::create_contents_notes(wb, df,
+  create_contents_notes(wb, df,
                                          hyperlinks = hyperlinks
                                          )
   fl <- tempfile(fileext = ".xlsx")
@@ -153,20 +161,23 @@ test_that("Function runs as expected with third column with hyperlinks", {
       X2 = c(NA, NA, "Description", df$Description),
       X3 = c(NA, NA, "Links", df$Links)))
 
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in%
         which(formats$local$font$color$theme == "hyperlink"),
       "address"],
-    data.frame(address = c("A4", "A5", "A6", "C6", "A7", "C7"))
+    data.frame(address = c("A4", "A5", "A6", "C6", "A7", "C7")),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$underline == "single"),
       "address"],
-    data.frame(address = c("A4", "A5", "A6", "C6", "A7", "C7"))
+    data.frame(address = c("A4", "A5", "A6", "C6", "A7", "C7")),
+    ignore_attr = TRUE
     )
-  expect_equivalent(
+  expect_equal(
     x[x$local_format_id %in% which(formats$local$font$color$rgb == "FF0000FF"),
       "address"],
-    data.frame(address = c("A4", "A5", "A6", "C6", "A7", "C7"))
+    data.frame(address = c("A4", "A5", "A6", "C6", "A7", "C7")),
+    ignore_attr = TRUE
     )
 })
