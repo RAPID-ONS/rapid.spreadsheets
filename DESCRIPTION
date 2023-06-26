@@ -2,10 +2,23 @@ Package: rapid.spreadsheets
 Type: Package
 Title: Create reproducible and accessible spreadsheets
 Version: 0.1.0
-Author: Who wrote it
+Authors@R: c(
+    person("Hannah", "Bunk", role = "aut"),
+    person("Patrycja", "Delong-Smith", role = "aut"),
+    person("Emyr", "John", role = "aut"),
+    person("Steve", "Reynolds", role = "aut"),
+    person("RAPID team", email = "DASCH_RAPID@ons.gov.uk", role = "cre"),
+    person("Office for National Statistics", role = c("cph", "fnd")))
 Maintainer: RAPID team <DASCH_RAPID@ons.gov.uk>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: rapid.spreadsheets can help you automate production of
+    spreadsheets that follow accessibility guidelines outlined in:
+    <https://analysisfunction.civilservice.gov.uk/policy-store/releasing-statistics-in-spreadsheets/>
+    It supports creating reference tables that can include: Cover sheet,
+    Contents table, Notes table and Data tables. Aside from data tables, all
+    sheet types support use of internal and external hyperlinks. As
+    rapid.spreadsheets package was built using openxlsx workbooks it provides
+    users with flexibility to add and modify formatting styles using openxlsx
+    functions.
 License: MIT plus LICENCE file
 Encoding: UTF-8
 LazyData: true
