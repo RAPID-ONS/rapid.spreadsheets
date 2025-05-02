@@ -7,7 +7,7 @@ test_that("Basic table is created with default values", {
   expect_equal(
     read.xlsx(wb, 1, colNames = FALSE),
     data.frame(
-      X1 = c("Heading", "This worksheet contains 1 table", "a", df$a),
+      X1 = c("Heading", "This worksheet contains one table", "a", df$a),
       X2 = c(NA, NA, "d", df$d)
     )
   )
