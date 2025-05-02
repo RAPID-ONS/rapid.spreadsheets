@@ -13,6 +13,10 @@
 #' @param subtitle_length Number of rows for subtitles and extra notes that
 #' will be under the heading and before the table, default is 0.
 #' @param num_tables Number of tables in worksheet as integer, default is 1.
+#' @param border_type String to identify which border type to use, default is
+#' "all_borders". Use "outline" to have a border surround the table and a border
+#' for the column names (heading row), use "vertical" to also include vertical
+#' borders between columns.
 #'
 #' @return Adds a worksheet to existing openxlsx workbook. The formatting will
 #' follow accessibility guidelines.
@@ -27,12 +31,13 @@ add_format_worksheet <- function(wb,
                                  tab_name,
                                  heading,
                                  subtitle_length = 0,
-                                 num_tables = 1) {
+                                 num_tables = 1,
+                                 border_type = "all_borders") {
 
   if (num_tables > 1) {
     stop("Avoid worksheets with multiple tables. This function cannot format
          multiple tables correctly. If you do need to have multiple tables
-         please consult accessability guidance and maunually format.")
+         please consult accessibility guidance and format these manually.")
   }
 
   openxlsx::addWorksheet(wb, tab_name, gridLines = FALSE)
@@ -49,22 +54,82 @@ add_format_worksheet <- function(wb,
                       )
 
   s <- create_styles()
-  openxlsx::addStyle(wb, tab_name, s$heading,
-                     rows = 1:heading_length,
-                     cols = 1,
-                     gridExpand = TRUE,
-                     stack = TRUE
-                     )
-  openxlsx::addStyle(wb, tab_name, s$table_header,
-                     rows = table_start_row,
-                     cols = 1:ncol_df,
-                     gridExpand = TRUE,
-                     stack = TRUE
-                     )
-  openxlsx::addStyle(wb, tab_name, s$border,
-                     rows = table_start_row:table_end_row,
-                     cols = 1:ncol_df,
-                     gridExpand = TRUE,
-                     stack = TRUE
-                     )
+  openxlsx::addStyle(
+    wb, tab_name, s$heading,
+    rows = 1:heading_length,
+    cols = 1,
+    gridExpand = TRUE,
+    stack = TRUE
+  )
+  openxlsx::addStyle(
+    wb, tab_name, s$table_header,
+    rows = table_start_row,
+    cols = 1:ncol_df,
+    gridExpand = TRUE,
+    stack = TRUE
+  )
+
+  if (border_type == "all_borders") {
+
+    openxlsx::addStyle(
+      wb, tab_name, s$all_borders,
+      rows = (table_start_row:table_end_row),
+      cols = 1:ncol_df,
+      gridExpand = TRUE,
+      stack = TRUE)
+
+  } else if (border_type == "outline") {
+
+    openxlsx::addStyle(
+      wb, tab_name, s$top_bottom_borders,
+      rows = table_start_row,
+      cols = 1:ncol_df,
+      gridExpand = TRUE,
+      stack = TRUE)
+    openxlsx::addStyle(
+      wb, tab_name, s$bottom_borders,
+      rows = table_end_row,
+      cols = 1:ncol_df,
+      gridExpand = TRUE,
+      stack = TRUE)
+    openxlsx::addStyle(
+      wb, tab_name, s$vertical_borders_right,
+      rows = (table_start_row:table_end_row),
+      cols = ncol_df,
+      gridExpand = TRUE,
+      stack = TRUE)
+    openxlsx::addStyle(
+      wb, tab_name, s$vertical_borders_left,
+      rows = (table_start_row:table_end_row),
+      cols = 1,
+      gridExpand = TRUE,
+      stack = TRUE)
+
+  } else if (border_type == "vertical") {
+
+    openxlsx::addStyle(
+      wb, tab_name, s$vertical_borders_right,
+      rows = (table_start_row:table_end_row),
+      cols = 1:ncol_df,
+      gridExpand = TRUE,
+      stack = TRUE)
+    openxlsx::addStyle(
+      wb, tab_name, s$vertical_borders_left,
+      rows = (table_start_row:table_end_row),
+      cols = 1,
+      gridExpand = TRUE,
+      stack = TRUE)
+    openxlsx::addStyle(
+      wb, tab_name, s$top_bottom_borders,
+      rows = table_start_row,
+      cols = 1:ncol_df,
+      gridExpand = TRUE,
+      stack = TRUE)
+    openxlsx::addStyle(
+      wb, tab_name, s$bottom_borders,
+      rows = table_end_row,
+      cols = 1:ncol_df,
+      gridExpand = TRUE,
+      stack = TRUE)
+  }
 }

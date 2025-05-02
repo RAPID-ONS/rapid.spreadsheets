@@ -25,6 +25,12 @@
 #' @param two_decimal Vector containing column numbers where values should
 #' be shown with two decimal points. Will also add thousand separator "1,000"
 #' where needed. Optional argument.
+#' @param border_type String to identify which border type to use, default is
+#' "all_borders". Use "outline" to have a border surround the table and a border
+#' for the column names (heading row), use "vertical" to also include vertical
+#' borders between columns.
+#' @param left_align Vector containing column numbers where values should
+#' be left aligned. Optional argument.
 #'
 #' @return Adds a worksheet with data table to existing openxlsx workbook.
 #'
@@ -42,14 +48,17 @@ create_data_table_tab <- function(wb,
                                   num_char_cols = NA,
                                   no_decimal = NA,
                                   one_decimal = NA,
-                                  two_decimal = NA) {
+                                  two_decimal = NA,
+                                  left_align = NA,
+                                  border_type = "all_borders") {
 
   add_format_worksheet(
     wb, ncol(df), nrow(df),
     tab_name,
     heading,
     length(additional_text),
-    num_tables
+    num_tables,
+    border_type
   )
   heading_length <- length(heading)
   table_start_row <- heading_length + length(additional_text) + 2
@@ -77,9 +86,9 @@ create_data_table_tab <- function(wb,
     overwrite_df(wb, df, tab_name, table_start_row, num_char_cols)
   }
 
-  decimals <- list(no_decimal, one_decimal, two_decimal)
+  decimals <- list(no_decimal, one_decimal, two_decimal, left_align)
   s <- create_styles()
-  style <- c(s$no_decimal, s$one_decimal, s$two_decimal)
+  style <- c(s$no_decimal, s$one_decimal, s$two_decimal, s$left_align)
 
   for (i in which(sapply(decimals, is.numeric) == TRUE)) {
 

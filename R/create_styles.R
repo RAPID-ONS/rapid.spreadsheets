@@ -55,10 +55,32 @@ create_styles <- function() {
     wrapText = TRUE
   )
 
-  s$border <- openxlsx::createStyle(
+  s$all_borders <- openxlsx::createStyle(
     border = c("top", "bottom", "left", "right"),
     borderStyle = "thin"
   )
+
+  s$top_bottom_borders <- openxlsx::createStyle(
+    border = c("top", "bottom"),
+    borderStyle = "thin"
+  )
+
+  s$vertical_borders_left <- openxlsx::createStyle(
+    border = "left",
+    borderStyle = "thin"
+  )
+
+  s$vertical_borders_right <- openxlsx::createStyle(
+    border = "right",
+    borderStyle = "thin"
+  )
+
+  s$bottom_borders <- openxlsx::createStyle(
+    border = "bottom",
+    borderStyle = "thin"
+  )
+
+  s$left_align <- openxlsx::createStyle(halign = "left")
 
   s$no_decimal <- openxlsx::createStyle(numFmt = "COMMA")
   s$one_decimal <- openxlsx::createStyle(numFmt = "#,##0.0")
