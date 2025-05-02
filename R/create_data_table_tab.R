@@ -125,33 +125,42 @@ overwrite_df <- function(wb, df, tab_name, table_start_row, num_char_cols) {
   df_list <- as.list(df)
   style <- openxlsx::createStyle(halign = "right")
 
-  for (i in seq_along(num_char_cols)) {
+  for (i in num_char_cols) {
 
-    icol <- df_list[[num_char_cols[i]]]
+    icol <- df_list[[i]]
+    non_num <- which(is.na(suppressWarnings(as.numeric(icol))))
 
-    for (j in seq_along(icol)) {
+    # overwrite chars as numbers (chars coerced into NA)
+    x <- suppressWarnings(as.numeric(icol))
 
-      if (is.na(suppressWarnings(as.numeric(icol[[j]])))) {
+    openxlsx::writeData(
+      wb, tab_name,
+      x,
+      startCol = i,
+      startRow = table_start_row + 1
+    )
 
-        x <- icol[[j]]
-        openxlsx::addStyle(
-          wb, tab_name,
-          style,
-          rows = j + table_start_row,
-          cols = num_char_cols[i],
-          stack = TRUE
-        )
+    if (length(non_num) > 0) {
 
-      } else {
-        x <- as.numeric(icol[[j]])
-      }
-
-      openxlsx::writeData(
+      # add character rows back, but aligned to the right
+      openxlsx::addStyle(
         wb, tab_name,
-        x,
-        startCol = num_char_cols[i],
-        startRow = j + table_start_row
+        style,
+        rows = non_num + table_start_row,
+        cols = i,
+        stack = TRUE
       )
+
+      for (j in non_num) {
+
+        x_char <- icol[[j]]
+        openxlsx::writeData(
+          wb, tab_name,
+          x_char,
+          startCol = i,
+          startRow = j + table_start_row
+        )
+      }
     }
   }
 }
