@@ -15,7 +15,9 @@ create_data_table_tab(
   num_char_cols = NA,
   no_decimal = NA,
   one_decimal = NA,
-  two_decimal = NA
+  two_decimal = NA,
+  left_align = NA,
+  border_type = "all_borders"
 )
 }
 \arguments{
@@ -51,6 +53,14 @@ where needed. Optional argument.}
 \item{two_decimal}{Vector containing column numbers where values should
 be shown with two decimal points. Will also add thousand separator "1,000"
 where needed. Optional argument.}
+
+\item{left_align}{Vector containing column numbers where values should
+be left aligned. Optional argument.}
+
+\item{border_type}{String to identify which border type to use, default is
+"all_borders". Use "outline" to have a border surround the table and a border
+for the column names (heading row), use "vertical" to also include vertical
+borders between columns.}
 }
 \value{
 Adds a worksheet with data table to existing openxlsx workbook.
