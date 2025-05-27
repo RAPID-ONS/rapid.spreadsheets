@@ -37,6 +37,44 @@ test_that("Numeric values stored as numeric even if mixed with text rows", {
   expect_equal(x$data_type[x$address %in% c("C6")], c("character"))
 })
 
+test_that("Numeric conversion works in factorial columns", {
+  wb <- openxlsx::createWorkbook()
+  df <- data.frame(
+    a = c("a","b","c"),
+    d = c(1, 2, 3),
+    r = as.factor(c(2.3, 4.1, "x"))
+  )
+  create_data_table_tab(wb, df, num_char_cols = 3)
+  fl <- tempfile(fileext = ".xlsx")
+  openxlsx::saveWorkbook(wb, file = fl, overwrite = TRUE)
+  x <- tidyxl::xlsx_cells(fl)
+
+  expect_equal(
+    x$data_type[x$address %in% c("C4", "C5")],
+    c("numeric", "numeric")
+  )
+  expect_equal(x$data_type[x$address %in% c("C6")], c("character"))
+})
+
+test_that("Numeric conversion works when there is more non-numeric rows", {
+  wb <- openxlsx::createWorkbook()
+  df <- data.frame(
+    a = c("a","b","c", "d", "e"),
+    d = c(1, 2, 3, 4, 5),
+    r = as.factor(c(2.3, 4.1, "x", "y", "z"))
+  )
+  create_data_table_tab(wb, df, num_char_cols = 3)
+  fl <- tempfile(fileext = ".xlsx")
+  openxlsx::saveWorkbook(wb, file = fl, overwrite = TRUE)
+  x <- tidyxl::xlsx_cells(fl)
+
+  expect_equal(
+    x$data_type[x$address %in% c("C4", "C5")],
+    c("numeric", "numeric")
+  )
+  expect_equal(x$data_type[x$address %in% c("C6")], c("character"))
+})
+
 test_that("Number formatting works as expected", {
   wb <- openxlsx::createWorkbook()
   v_numFmt <- c(1.123, 2.345, 1003.456)
@@ -70,3 +108,4 @@ test_that("Number formatting works as expected", {
     paste0("D", 4:6)
   )
 })
+

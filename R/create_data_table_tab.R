@@ -122,45 +122,65 @@ create_data_table_tab <- function(wb,
 
 overwrite_df <- function(wb, df, tab_name, table_start_row, num_char_cols) {
 
-  df_list <- as.list(df)
-  style <- openxlsx::createStyle(halign = "right")
-
   for (i in num_char_cols) {
 
-    icol <- df_list[[i]]
-    non_num <- which(is.na(suppressWarnings(as.numeric(icol))))
+    if (is.factor(df[[i]])) {
+      # for factorial columns transformations would result in listing factor
+      # levels instead of values, so conversion to character is needed
+      icol <- as.character(df[[i]])
+    } else {
+      icol <- df[[i]]
+    }
 
-    # overwrite chars as numbers (chars coerced into NA)
     x <- suppressWarnings(as.numeric(icol))
+    non_num <- which(is.na(x))
+    num_rows <- which(!is.na(x))
 
-    openxlsx::writeData(
-      wb, tab_name,
-      x,
-      startCol = i,
-      startRow = table_start_row + 1
-    )
+    # if most rows are numeric, overwrite data with numeric and add back
+    # character rows, otherwise overwrite numeric rows only - for efficiency
+    if (length(non_num) < length(icol)/2) {
 
-    if (length(non_num) > 0) {
-
-      # add character rows back, but aligned to the right
-      openxlsx::addStyle(
+      openxlsx::writeData(
         wb, tab_name,
-        style,
-        rows = non_num + table_start_row,
-        cols = i,
-        stack = TRUE
+        x,
+        startCol = i,
+        startRow = table_start_row + 1
       )
 
-      for (j in non_num) {
+      if (length(non_num) > 0) {
 
-        x_char <- icol[[j]]
+        for (j in non_num) {
+
+          openxlsx::writeData(
+            wb, tab_name,
+            icol[[j]],
+            startCol = i,
+            startRow = j + table_start_row
+          )
+        }
+      }
+    } else {
+
+      for (j in num_rows) {
+
         openxlsx::writeData(
           wb, tab_name,
-          x_char,
+          x[[j]],
           startCol = i,
           startRow = j + table_start_row
         )
       }
+    }
+
+    if (length(non_num) > 0) {
+      # if there are character rows align them to the right to match numbers
+      openxlsx::addStyle(
+        wb, tab_name,
+        openxlsx::createStyle(halign = "right"),
+        rows = non_num + table_start_row,
+        cols = i,
+        stack = TRUE
+      )
     }
   }
 }
