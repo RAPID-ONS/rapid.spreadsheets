@@ -122,7 +122,7 @@ create_cover_sheet <- function(wb,
 
   if (is.data.frame(hyperlinks)) {
 
-    for (x in 1:nrow(hyperlinks)) {
+    for (x in seq_len(nrow(hyperlinks))) {
 
       hyperlink_name <- hyperlinks[x, 2]
       names(hyperlink_name) <- text_df[hyperlinks[x, 1], 1]
@@ -137,7 +137,8 @@ create_cover_sheet <- function(wb,
           x = hyperlink_name
         )
       } else {
-        stop("Row number for a hyperlink is higher than number of rows with text.")
+        stop(paste("Row number for a hyperlink is higher than number of rows",
+                   "with text."))
       }
     }
   }

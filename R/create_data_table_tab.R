@@ -64,7 +64,7 @@ create_data_table_tab <- function(wb,
   table_start_row <- heading_length + length(additional_text) + 2
   table_end_row <- table_start_row + nrow(df)
 
-  openxlsx::setColWidths(wb, tab_name, 1:ncol(df), column_width)
+  openxlsx::setColWidths(wb, tab_name, seq_len(ncol(df)), column_width)
 
   openxlsx::writeData(
     wb, tab_name,
@@ -138,7 +138,7 @@ overwrite_df <- function(wb, df, tab_name, table_start_row, num_char_cols) {
 
     # if most rows are numeric, overwrite data with numeric and add back
     # character rows, otherwise overwrite numeric rows only - for efficiency
-    if (length(non_num) < length(icol)/2) {
+    if (length(non_num) < length(icol) / 2) {
 
       openxlsx::writeData(
         wb, tab_name,

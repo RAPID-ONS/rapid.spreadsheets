@@ -7,6 +7,7 @@ Authors@R: c(
     person("Patrycja", "Delong-Smith", role = "aut"),
     person("Emyr", "John", role = "aut"),
     person("Steve", "Reynolds", role = "aut"),
+    person("Megan", "Munro", role = "aut"),
     person("RAPID team", email = "DASCH_RAPID@ons.gov.uk", role = "cre"),
     person("Office for National Statistics", role = c("cph", "fnd")))
 Maintainer: RAPID team <DASCH_RAPID@ons.gov.uk>

@@ -83,13 +83,13 @@ create_contents_notes <- function(wb,
   openxlsx::addStyle(
     wb, tab_name, s$centre,
     rows = table_start_row:table_end_row,
-    cols = 1:ncol(df),
+    cols = seq_len(ncol(df)),
     gridExpand = TRUE,
     stack = TRUE
   )
 
   if (contents_links == TRUE) {
-    for (y in 1:nrow(df)) {
+    for (y in seq_len(nrow(df))) {
       openxlsx::writeFormula(
         wb, tab_name,
         startRow = table_start_row + y,
