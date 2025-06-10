@@ -95,7 +95,7 @@ create_data_table_tab <- function(wb,
     openxlsx::addStyle(
       wb, tab_name,
       style = style[[i]],
-      rows = (table_start_row + 1):table_end_row, # first table row is colname
+      rows = (table_start_row + 1):table_end_row, # First table row is colname
       cols = decimals[[i]],
       gridExpand = TRUE,
       stack = TRUE
@@ -107,6 +107,9 @@ create_data_table_tab <- function(wb,
 #'
 #' @description Overwrites selected columns that contain both numeric and
 #' character elements.
+#'
+#' @details Factor columns are converted to character columns before being
+#' converted.
 #'
 #' @param wb `openxlsx` workbook name.
 #' @param df Data frame containing columns with worksheet names and
@@ -125,7 +128,7 @@ overwrite_df <- function(wb, df, tab_name, table_start_row, num_char_cols) {
   for (i in num_char_cols) {
 
     if (is.factor(df[[i]])) {
-      # For factorial columns transformations would result in listing factor
+      # Factor column transformations would result in listing factor
       # levels instead of values, so conversion to character is needed
       icol <- as.character(df[[i]])
     } else {
@@ -173,7 +176,7 @@ overwrite_df <- function(wb, df, tab_name, table_start_row, num_char_cols) {
     }
 
     if (length(non_num) > 0) {
-      # If there are character rows align them to the right to match numbers
+      # If there are character rows, align them to the right to match numbers
       openxlsx::addStyle(
         wb, tab_name,
         openxlsx::createStyle(halign = "right"),

@@ -26,3 +26,7 @@ Updated workbook with modified columns.
 Overwrites selected columns that contain both numeric and
 character elements.
 }
+\details{
+Factor columns are converted to character columns before being
+converted.
+}
