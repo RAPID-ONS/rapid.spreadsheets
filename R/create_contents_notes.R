@@ -1,9 +1,9 @@
 #' @title Adds contents or notes worksheet to workbook.
 #'
-#' @description This function adds a contents or notes worksheet to an openxlsx
-#' workbook.
+#' @description This function adds a contents or notes worksheet to an
+#' `openxlsx` workbook.
 #'
-#' @param wb An openxlsx workbook object.
+#' @param wb An `openxlsx` workbook object.
 #' @param df Data frame containing two or three columns e.g.: worksheet names
 #' (containing tab names), worksheet descriptions and an optional third column
 #' containing hyperlink text.
@@ -28,7 +28,7 @@
 #' for the column names (heading row), use "vertical" to also include vertical
 #' borders between columns.
 #'
-#' @return Adds a new contents/notes worksheet to existing openxlsx workbook.
+#' @return Adds a new contents/notes worksheet to existing `openxlsx` workbook.
 #'
 #' @import openxlsx
 #'

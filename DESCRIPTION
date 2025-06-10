@@ -22,6 +22,7 @@ Description: rapid.spreadsheets can help you automate production of
     functions.
 License: MIT plus LICENCE file
 Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
 LazyData: true
 Suggests: 
     knitr,

@@ -7,7 +7,7 @@
 overwrite_df(wb, df, tab_name, table_start_row, num_char_cols)
 }
 \arguments{
-\item{wb}{Openxlsx workbook name.}
+\item{wb}{\code{openxlsx} workbook name.}
 
 \item{df}{Data frame containing columns with worksheet names and
 descriptions.}

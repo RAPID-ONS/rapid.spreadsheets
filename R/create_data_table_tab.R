@@ -1,12 +1,12 @@
 #' @title Adds data table worksheet to workbook.
 #'
-#' @description This function adds a data table worksheet to an openxlsx
+#' @description This function adds a data table worksheet to an `openxlsx`
 #' workbook.
 #'
-#' @param wb An openxlsx workbook object.
+#' @param wb An `openxlsx` workbook object.
 #' @param df Data frame containing data to put in data table.
 #' @param tab_name Worksheet name as string, default is "Table_1".
-#' @param heading Table title/ heading as character vector. Vector length
+#' @param heading Table title/heading as character vector. Vector length
 #' should be one unless table title is very long. If length is more than one
 #' text will be split in multiple rows. Default is "Heading".
 #' @param additional_text Character vector containing additional rows of text
@@ -32,7 +32,7 @@
 #' @param left_align Vector containing column numbers where values should
 #' be left aligned. Optional argument.
 #'
-#' @return Adds a worksheet with data table to existing openxlsx workbook.
+#' @return Adds a worksheet with data table to existing `openxlsx` workbook.
 #'
 #' @import openxlsx
 #'
@@ -108,7 +108,7 @@ create_data_table_tab <- function(wb,
 #' @description Overwrites selected columns that contain both numeric and
 #' character elements.
 #'
-#' @param wb Openxlsx workbook name.
+#' @param wb `openxlsx` workbook name.
 #' @param df Data frame containing columns with worksheet names and
 #' descriptions.
 #' @param tab_name Worksheet name as string.
@@ -125,7 +125,7 @@ overwrite_df <- function(wb, df, tab_name, table_start_row, num_char_cols) {
   for (i in num_char_cols) {
 
     if (is.factor(df[[i]])) {
-      # for factorial columns transformations would result in listing factor
+      # For factorial columns transformations would result in listing factor
       # levels instead of values, so conversion to character is needed
       icol <- as.character(df[[i]])
     } else {
@@ -136,7 +136,7 @@ overwrite_df <- function(wb, df, tab_name, table_start_row, num_char_cols) {
     non_num <- which(is.na(x))
     num_rows <- which(!is.na(x))
 
-    # if most rows are numeric, overwrite data with numeric and add back
+    # If most rows are numeric, overwrite data with numeric and add back
     # character rows, otherwise overwrite numeric rows only - for efficiency
     if (length(non_num) < length(icol) / 2) {
 
@@ -173,7 +173,7 @@ overwrite_df <- function(wb, df, tab_name, table_start_row, num_char_cols) {
     }
 
     if (length(non_num) > 0) {
-      # if there are character rows align them to the right to match numbers
+      # If there are character rows align them to the right to match numbers
       openxlsx::addStyle(
         wb, tab_name,
         openxlsx::createStyle(halign = "right"),

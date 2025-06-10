@@ -1,8 +1,8 @@
 #' @title Create styles
 #'
-#' @description A function to create common openxlsx styles.
+#' @description A function to create common `openxlsx` styles.
 #'
-#' @return List containing styles to use within openxlsx::addStyle() function.
+#' @return List containing styles to use within `openxlsx::addStyle()` function.
 #'
 #' @import openxlsx
 #' @export

@@ -7,8 +7,8 @@
 create_styles()
 }
 \value{
-List containing styles to use within openxlsx::addStyle() function.
+List containing styles to use within \code{openxlsx::addStyle()} function.
 }
 \description{
-A function to create common openxlsx styles.
+A function to create common \code{openxlsx} styles.
 }

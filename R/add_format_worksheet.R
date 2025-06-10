@@ -1,9 +1,9 @@
 #' @title Add a new worksheet with basic formatting.
 #'
 #' @description This function will add a new worksheet with formatting that
-#' follows accessibility guidelines to an openxlsx workbook.
+#' follows accessibility guidelines to an `openxlsx` workbook.
 #'
-#' @param wb An openxlsx workbook object.
+#' @param wb An `openxlsx` workbook object.
 #' @param ncol_df Number of columns in table.
 #' @param nrow_df Number of rows in table.
 #' @param tab_name Worksheet name as a string.
@@ -18,7 +18,7 @@
 #' for the column names (heading row), use "vertical" to also include vertical
 #' borders between columns.
 #'
-#' @return Adds a worksheet to existing openxlsx workbook. The formatting will
+#' @return Adds a worksheet to existing `openxlsx` workbook. The formatting will
 #' follow accessibility guidelines.
 #'
 #' @import openxlsx

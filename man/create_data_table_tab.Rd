@@ -21,13 +21,13 @@ create_data_table_tab(
 )
 }
 \arguments{
-\item{wb}{An openxlsx workbook object.}
+\item{wb}{An \code{openxlsx} workbook object.}
 
 \item{df}{Data frame containing data to put in data table.}
 
 \item{tab_name}{Worksheet name as string, default is "Table_1".}
 
-\item{heading}{Table title/ heading as character vector. Vector length
+\item{heading}{Table title/heading as character vector. Vector length
 should be one unless table title is very long. If length is more than one
 text will be split in multiple rows. Default is "Heading".}
 
@@ -63,9 +63,9 @@ for the column names (heading row), use "vertical" to also include vertical
 borders between columns.}
 }
 \value{
-Adds a worksheet with data table to existing openxlsx workbook.
+Adds a worksheet with data table to existing \code{openxlsx} workbook.
 }
 \description{
-This function adds a data table worksheet to an openxlsx
+This function adds a data table worksheet to an \code{openxlsx}
 workbook.
 }

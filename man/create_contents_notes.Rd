@@ -18,7 +18,7 @@ create_contents_notes(
 )
 }
 \arguments{
-\item{wb}{An openxlsx workbook object.}
+\item{wb}{An \code{openxlsx} workbook object.}
 
 \item{df}{Data frame containing two or three columns e.g.: worksheet names
 (containing tab names), worksheet descriptions and an optional third column
@@ -37,8 +37,8 @@ text to place above the table, default is empty.}
 
 \item{hyperlinks}{Data frame with two columns:
 \itemize{
-  \item first column as a numeric vector listing rows in df with hyperlinks,
-  \item second column as character vector with url or email addresses.
+\item first column as a numeric vector listing rows in df with hyperlinks,
+\item second column as character vector with url or email addresses.
 }
 The df has to have three columns as hyperlinks will be added to the third
 column. Optional argument.}
@@ -53,9 +53,9 @@ for the column names (heading row), use "vertical" to also include vertical
 borders between columns.}
 }
 \value{
-Adds a new contents/notes worksheet to existing openxlsx workbook.
+Adds a new contents/notes worksheet to existing \code{openxlsx} workbook.
 }
 \description{
-This function adds a contents or notes worksheet to an openxlsx
-workbook.
+This function adds a contents or notes worksheet to an
+\code{openxlsx} workbook.
 }

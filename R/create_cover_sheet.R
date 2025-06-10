@@ -1,9 +1,9 @@
 #' @title Adds cover sheet worksheet to workbook.
 #'
-#' @description This function adds a Cover sheet worksheet to an openxlsx
+#' @description This function adds a Cover sheet worksheet to an `openxlsx`
 #' workbook.
 #'
-#' @param wb An openxlsx workbook object.
+#' @param wb An `openxlsx` workbook object.
 #' @param text_df A data frame containing the cover sheet text in a single
 #' column.
 #' @param tab_name Worksheet name as character string, default is

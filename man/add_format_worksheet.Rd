@@ -16,7 +16,7 @@ add_format_worksheet(
 )
 }
 \arguments{
-\item{wb}{An openxlsx workbook object.}
+\item{wb}{An \code{openxlsx} workbook object.}
 
 \item{ncol_df}{Number of columns in table.}
 
@@ -39,10 +39,10 @@ for the column names (heading row), use "vertical" to also include vertical
 borders between columns.}
 }
 \value{
-Adds a worksheet to existing openxlsx workbook. The formatting will
+Adds a worksheet to existing \code{openxlsx} workbook. The formatting will
 follow accessibility guidelines.
 }
 \description{
 This function will add a new worksheet with formatting that
-follows accessibility guidelines to an openxlsx workbook.
+follows accessibility guidelines to an \code{openxlsx} workbook.
 }
