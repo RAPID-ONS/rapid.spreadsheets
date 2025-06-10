@@ -50,8 +50,7 @@ add_format_worksheet <- function(wb,
   openxlsx::writeData(wb, tab_name, heading, startCol = 1, startRow = 1)
   openxlsx::writeData(wb, tab_name, "This worksheet contains one table",
                       startCol = 1,
-                      startRow = heading_length + 1
-                      )
+                      startRow = heading_length + 1)
 
   s <- create_styles()
   openxlsx::addStyle(

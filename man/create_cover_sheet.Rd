@@ -52,7 +52,7 @@ Default is 30.}
 Default is 130.}
 }
 \value{
-Adds a cover sheet worksheet to existing openxlsx workbook.
+Adds a cover sheet worksheet to existing \code{openxlsx} workbook.
 }
 \description{
 This function adds a Cover sheet worksheet to an \code{openxlsx}

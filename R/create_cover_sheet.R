@@ -57,7 +57,7 @@
 #' }
 #'
 #'
-#' @return Adds a cover sheet worksheet to existing openxlsx workbook.
+#' @return Adds a cover sheet worksheet to existing `openxlsx` workbook.
 #'
 #' @import openxlsx
 #'

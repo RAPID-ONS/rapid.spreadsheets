@@ -98,8 +98,8 @@ create_contents_notes <- function(wb,
           row = 1,
           col = 1,
           text = df[y, 1]
-          )
         )
+      )
     }
   }
 
