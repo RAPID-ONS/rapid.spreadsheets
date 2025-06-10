@@ -10,7 +10,7 @@ test_that("Adds worksheet to a workbook", {
   expect_equal(wb$sheet_names, "One")
   expect_equal(
     read.xlsx(wb, 1, colNames = FALSE),
-    data.frame(X1 = c("Title", "This worksheet contains 1 table"))
+    data.frame(X1 = c("Title", "This worksheet contains one table"))
   )
 })
 

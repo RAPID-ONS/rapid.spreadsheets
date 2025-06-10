@@ -4,9 +4,11 @@ test_that("List has been created", {
   expect_true(is.list(s))
 })
 
-test_that("List contains 11 styles used by other speadsheet funtions", {
+test_that("List contains 16 styles used by other speadsheet funtions", {
   s_names <-  c("text", "bold_text", "heading", "subheadings", "table_header",
-                "wrap_text", "centre", "border", "no_decimal", "one_decimal",
+                "wrap_text", "centre", "all_borders", "top_bottom_borders",
+                "vertical_borders_left", "vertical_borders_right",
+                "bottom_borders", "left_align", "no_decimal", "one_decimal",
                 "two_decimal")
   expect_true(all(s_names %in% names(s)))
   for (i in seq(s_names)){
@@ -31,6 +33,14 @@ test_that("Fonts in text styles have expected sizes", {
   }
 })
 
+test_that("Fonts in text styles are left aligned", {
+  s_names <-  c("text", "bold_text", "heading", "subheadings", "table_header",
+                "wrap_text", "centre")
+  for (i in seq(s_names)){
+    expect_equal(s[[s_names[i]]]$halign, "left", ignore_attr = TRUE)
+  }
+})
+
 test_that("Bold styles are bold", {
   s_names <-  c("bold_text", "heading", "subheadings", "table_header")
   for (i in seq(s_names)){
@@ -38,11 +48,65 @@ test_that("Bold styles are bold", {
   }
 })
 
-test_that("Border style has thin borders on all sides", {
+test_that("Table header style is top aligned", {
+  expect_equal(s[["table_header"]]$valign, "top", ignore_attr = TRUE)
+})
+
+test_that("Text styles are wrapped", {
+  s_names <-  c("table_header", "wrap_text", "centre")
+  for (i in seq(s_names)){
+    expect_equal(s[[s_names[i]]]$wrapText, TRUE, ignore_attr = TRUE)
+  }
+})
+
+test_that("Centre style is centrally aligned", {
+  expect_equal(s[["centre"]]$valign, "center", ignore_attr = TRUE)
+})
+
+test_that("All borders style has thin borders on all sides", {
   borders <- c("borderTop", "borderBottom", "borderLeft", "borderRight")
   for (i in seq(borders)){
-    expect_equal(s$border[[borders[i]]], "thin", ignore_attr = TRUE)
+    expect_equal(s$all_borders[[borders[i]]], "thin")
   }
+})
+
+test_that("Top and bottom borders style has thin borders on top and bottom", {
+  borders <- c("borderTop", "borderBottom")
+  for (i in seq(borders)){
+    expect_equal(s$top_bottom_borders[[borders[i]]], "thin")
+  }
+  no_borders <- c("borderLeft", "borderRight")
+  for (i in seq(no_borders)){
+    expect_equal(s$top_bottom_borders[[no_borders[i]]], NULL)
+  }
+})
+
+test_that("Vertical borders left style has thin borders on the left", {
+  borders <- c("borderTop", "borderBottom", "borderRight")
+  for (i in seq(borders)){
+    expect_equal(s$vertical_borders_left[[borders[i]]], NULL)
+  }
+  expect_equal(s$vertical_borders_left$borderLeft, "thin")
+})
+
+test_that("Vertical borders right style has thin borders on the right", {
+  borders <- c("borderTop", "borderBottom", "borderLeft")
+  for (i in seq(borders)){
+    expect_equal(s$vertical_borders_right[[borders[i]]], NULL)
+  }
+  expect_equal(s$vertical_borders_right$borderRight, "thin")
+})
+
+test_that("Bottom borders style has thin borders on the bottom", {
+  borders <- c("borderTop", "borderLeft", "borderRight")
+  for (i in seq(borders)){
+    expect_equal(s$bottom_borders[[borders[i]]], NULL)
+  }
+  expect_equal(s$bottom_borders$borderBottom, "thin")
+})
+
+test_that("Left aligned style has alignment set to left", {
+  expect_equal(s$left_align$halign, "left")
 })
 
 test_that("Styles formatting numbers have numFmt list", {

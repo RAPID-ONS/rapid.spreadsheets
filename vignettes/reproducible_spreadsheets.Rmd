@@ -14,24 +14,24 @@ knitr::opts_chunk$set(
 )
 ```
 
-rapid.spreadsheets package can help you automate production of spreadsheets that follow accessibility guidelines. Here you can see and example of producing simple reference tables with Cover Sheet, Notes and a few tables.
+`rapid.spreadsheets` package can help you automate production of spreadsheets that follow [Analysis Function accessibility guidelines](https://analysisfunction.civilservice.gov.uk/policy-store/releasing-statistics-in-spreadsheets/). Here, you can see an example of producing a simple reference workbook with a cover sheet, notes and a few tables.
 
 ```{r setup}
 library(rapid.spreadsheets)
 library(openxlsx)
 ```
 
-First you need to create a standard openxlsx workbook and then you can use functions from rapid.spreadsheets package to add tables with appropriate formatting.
-* Note that in this tutorial we will be creating new workbooks multiple times as we will want to overwrite tabs with the same names. You will only need to create it once for one xls file.
+First, you need to create a standard `openxlsx` workbook and then you can use functions from `rapid.spreadsheets` package to add tables with appropriate formatting.  
+* Note that in this tutorial, we will be creating new workbooks multiple times as we will want to overwrite tabs with the same names. You will only need to create it once for one xls file.
 
 ```{r}
 wb <- createWorkbook()
 ```
 
-# Cover sheet
+## Cover sheet
 Let's start with cover sheet as this is often the first tab in data tables.
 
-We will use a .txt file to populate our example cover sheet, but you can also use a standard data.frame in R. It should only contain a single column. Name of the column is irrelevant as it won't be used.
+We will use a `.txt` file to populate our example cover sheet, but you can also use a standard `data.frame` in R. It should only contain a single column. The name of the column is irrelevant as it won't be used.
 
 ```{r}
 cover_sheet_text <- read.csv(
@@ -41,7 +41,7 @@ cover_sheet_text <- read.csv(
   fileEncoding = "UTF-8-BOM")
 cover_sheet_text
 ```
-To create simple cover sheet tab you can use create_cover_sheet function. Using optional subheadings and rows_t_bold arguments you can specify which rows should be formatted as subheadings and which ones should be as bold text.
+To create simple cover sheet tab you can use `create_cover_sheet` function. Using optional `subheadings` and `rows_to_bold` arguments you can specify which rows should be formatted as subheadings and which ones should be as bold text.
 ```{r}
 create_cover_sheet(
   wb = wb,
@@ -51,12 +51,12 @@ create_cover_sheet(
 )
 ```
 
-To have a peak on how our spreadsheet will look like we can use following openxlsx function:
+To have a peak on what our spreadsheet will look like, we can use following `openxlsx` function:
 ```{r eval = FALSE}
 openXL(wb)
 ```
 
-The information contained in cover sheets and notes is often static, but usually you need to update some parts of it - to help automate this you can use a replace argument in the function. In this example we change release date to a given date and insert publication year into row with copyright information.
+The information contained in cover sheets and notes is often static, but usually you need to update some parts of it. To help automate this, you can use a `replacements` argument in the function. In this example, we change release date to a given date and insert publication year into row with copyright information.
 
 ```{r}
 replacements <- data.frame(
@@ -64,7 +64,7 @@ replacements <- data.frame(
   with = c(" 5 September 2022", "2022"))
 ```
 
-You can also easily add links to your cover sheet by creating a data.frame that contains rows and links column. Rows should indicate which row in the cover sheet data frame contains the corresponding link. Website urls need to be stored as characters. When you include email address simply add "mailto:" in front of email address.
+You can also easily add links to your cover sheet by creating a `data.frame` that contains rows and links column. Rows should indicate which row in the cover sheet `data.frame` contains the corresponding link. Website urls need to be stored as characters. When you include email address, simply add "mailto:" in front of email address.
 
 ```{r}
 cover_sheet_links <- data.frame(
@@ -72,7 +72,7 @@ cover_sheet_links <- data.frame(
   links = c("https://github.com/RAPID-ONS", "mailto:email@email.uk"))
 ```
  
-Now you can create cover sheet with replacements and links using create_cover_sheet function.
+Now you can create cover sheet with arguments for `replacements` and `hyperlinks` using `create_cover_sheet` function.
 
 ```{r eval = FALSE}
 wb <- createWorkbook()
@@ -87,13 +87,13 @@ create_cover_sheet(
 openXL(wb)
 ```
 
-# Contents sheet
+## Contents sheet
 
-Contents sheet contains a table linking to all the other tabs in the excel documents in one column and describing waht they are in the second column. It can also have a third column with links.
+The contents sheet contains a table linking to all the other tabs in the Excel documents in one column and describing what they are in the second column. It can also have a third column with links.
 
-Our example content .txt file has to columns. You can also create a data frame with  two columns instead of using a .txt file. This time column names are important as we will use them in the table.
+Our example content `.txt` file has two columns, separated by tabs. You can also create a `data.frame` with two columns instead of using a `.txt` file. This time column names are important as we will use them in the table.
 
-As a minimum your contents data.frame should contain two columns and first column should contain the names of the worksheets in your workbook.
+As a minimum your contents `data.frame` should contain two columns and first column should contain the names of the worksheets in your workbook.
 
 ```{r}
 contents_text <- read.csv(
@@ -106,14 +106,15 @@ contents_text <- read.csv(
 contents_text
 ```
 
-Optionally you can also have a third column with links. Again name of the column will be used directly in the table. It should contain text displayed for the urls in the rows in which you'd like to have links, rest of the rows should be NA. For instance:
+Optionally, you can also have a third column with links. Again, name of the column will be used directly in the table. It should contain text displayed for the urls in the rows in which you'd like to have links, rest of the rows should be NA. For instance:
 ```{r}
 contents_text$"Related links" <- c(NA, NA, "More about X", rep(NA, 5), "link")
 contents_text
 ```
 
-To add hyperlinks you will also need to specify which rows of the table they are and
-urls of the websites they should direct to. Here we want to add two links in rows 3 and 9. Note that you will need that third column in the contents data frame to add the hyperlinks.
+To add hyperlinks, you will also need to specify which rows of the table they refer to and urls of the websites they should direct to.
+
+Here we want to add two links in rows 3 and 9. Note, that you will need that third column in the contents `data.frame` to add the hyperlinks.
 
 ```{r}
 hyperlinks <- data.frame(
@@ -122,12 +123,12 @@ hyperlinks <- data.frame(
             "https://github.com/RAPID-ONS/rapid.spreadsheets"))
 ```
 
-We can also add additional subtitles to our contents sheet if we like to. To do so, create a character vector where each element will be changed into additional row of text and places under the sheet title.
+We can also add additional subtitles to our contents sheet if we like to. To do so, we create a character vector where each element will be changed into additional row of text and places under the sheet title.
 ```{r}
 subtitles_vector <- c("sub one", "sub two", "sub three")
 ```
 
-To create contents worksheet we use create_content_notes function. Note only wb and df are required arguments, other are optional.
+To create contents worksheet we use `create_content_notes` function. Note only `wb` and `df` are required arguments, the others are optional.
 ```{r eval = FALSE}
 create_contents_notes(
   wb = wb,
@@ -138,11 +139,11 @@ create_contents_notes(
 openXL(wb)
 ```
 
-# Notes sheet
+## Notes sheet
 
-Most datasets are accompanied by a set of information providing users with details necessary to interpret the data such as information on data sources and/or methods. These are often brought together in a notes table.
+Most datasets are accompanied by a set of information providing users with details necessary to interpret the data, such as information on data sources and/or methods. These are often brought together in a notes table.
 
-Notes table can be produced using create_content_notes function, and similarly to contents data.frame it can have two or three columns.
+The notes table can be produced using `create_content_notes` function, and similarly to the contents `data.frame`, it can have two or three columns.
 
 Our example notes table has two columns, but you can add more and hyperlinks in the same way as for contents table.
 
@@ -156,7 +157,7 @@ notes_text <- read.csv(
   check.names = FALSE)
 notes_text
 ```
-When using create_content_notes for a sheet different than contents we need to change default tab_name to the sheet name we want to use and heading to the title we want to use. We also need to set content_links argument to FALSE - otherwise it will treat the values in the first column as names linking to respective tabs of the excel document.
+When using `create_content_notes` for a sheet different than contents, we need to change default `tab_name` to the sheet name we want to use and `heading` to the title we want to use. We also need to set `content_links` argument to `FALSE` - otherwise it will treat the values in the first column as names linking to respective tabs of the Excel document.
 
 ```{r eval = FALSE}
 create_contents_notes(
@@ -170,9 +171,9 @@ create_contents_notes(
 openXL(wb)
 ```
 
-# Data table sheets
+## Data table sheets
 
-For sheets containing actual data tables we can use standard data.frames with all the data we want to publish. The function will use the column names in the data.frame directly - if you want to ensure that spaces are preserved you need to set check.names argument to FALSE when creating/adding colummns to your data.frame.
+For sheets containing actual data tables we can use standard `data.frames` with all the data we want to publish. The function will use the column names in the `data.frame` directly - if you want to ensure that spaces and any special characters are preserved, you need to set `check.names` argument to `FALSE` when creating/adding columns to your `data.frame`.
 
 ```{r}
 df <- data.frame(
@@ -180,12 +181,12 @@ df <- data.frame(
   "Age group" = rep("10 to 14", 8),
   Deaths = as.character(c(seq(6.25, 7.75, 0.25), 2222.22)),
   Rate = c(1:6, 1000, "[x]"),
-  check.names = FALSE # use this to retain spaces in column names
+  check.names = FALSE # Use this to retain spaces in column names
 )
 df
 ```
 
-You can set up desired formatting styles for numeric columns. A For instance if you have columns that contain characters as well as numbers (e.g. [x]) you will get "Numbers stored as text" warning in your excel document. To avoid that, specify affected column numbers as a numeric vetor to num_char_cols argument. You can also specify column numbers that should be displayed with no docimal points, one decimal point etc. All styles will show thousands with a comma.
+You can set up desired formatting styles for numeric columns. For instance, if you have columns that contain characters as well as numbers (e.g. `[x]`), you will get "Numbers stored as text" warning in your Excel document. To avoid this, specify the affected column numbers as a numeric vector to `num_char_cols` argument. You can also specify column numbers that should be displayed with no decimal points, one decimal point etc. All styles will show thousands with a comma if they are passed to one of the numerical formatting arguments.
 
 ```{r eval = FALSE}
 create_data_table_tab(
@@ -199,14 +200,14 @@ create_data_table_tab(
 openXL(wb)
 ```
 
-# Saving your document
+## Saving your document
 
-To save the file use saveWorkbook function from openxlsx package.
+To save the file use `saveWorkbook` function from `openxlsx` package.
 ```{r eval = FALSE}
 saveWorkbook(wb, "filename.xlsx")
 ```
 
-# Additional formatting options
+## Additional formatting options
 
 Check help pages for each function to see additional options. For instance:
 
@@ -214,7 +215,7 @@ Check help pages for each function to see additional options. For instance:
 ?create_cover_sheet
 ```
 
-You can easily add additional styles to specific cells using openxlsx package and setting stack argument as TRUE. For instance:
+You can easily add additional styles to specific cells using `openxlsx` package and setting stack argument as `TRUE`. For instance:
 ```{r eval = FALSE}
 red_bold <- createStyle(fontColour = "#ff0000", textDecoration = "Bold")
 addStyle(wb, 

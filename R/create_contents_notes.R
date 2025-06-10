@@ -1,9 +1,9 @@
 #' @title Adds contents or notes worksheet to workbook.
 #'
-#' @description This function adds a contents or notes worksheet to an openxlsx
-#' workbook.
+#' @description This function adds a contents or notes worksheet to an
+#' `openxlsx` workbook.
 #'
-#' @param wb An openxlsx workbook object.
+#' @param wb An `openxlsx` workbook object.
 #' @param df Data frame containing two or three columns e.g.: worksheet names
 #' (containing tab names), worksheet descriptions and an optional third column
 #' containing hyperlink text.
@@ -23,8 +23,12 @@
 #' column. Optional argument.
 #' @param column_width Width of Excel columns, defaults are: 20, 80 and 15.
 #' @param num_tables Number of tables in a worksheet, default is 1.
+#' @param border_type String to identify which border type to use, default is
+#' "all_borders". Use "outline" to have a border surround the table and a border
+#' for the column names (heading row), use "vertical" to also include vertical
+#' borders between columns.
 #'
-#' @return Adds a new contents/notes worksheet to existing openxlsx workbook.
+#' @return Adds a new contents/notes worksheet to existing `openxlsx` workbook.
 #'
 #' @import openxlsx
 #'
@@ -38,14 +42,16 @@ create_contents_notes <- function(wb,
                                   additional_text = c(),
                                   hyperlinks = NA,
                                   column_width = c(20, 80, 15),
-                                  num_tables = 1) {
+                                  num_tables = 1,
+                                  border_type = "all_borders") {
 
   add_format_worksheet(
     wb, ncol(df), nrow(df),
     tab_name,
     heading,
     length(additional_text),
-    num_tables
+    num_tables,
+    border_type
   )
   heading_length <- length(heading)
   table_start_row <- heading_length + length(additional_text) + 2
@@ -77,13 +83,13 @@ create_contents_notes <- function(wb,
   openxlsx::addStyle(
     wb, tab_name, s$centre,
     rows = table_start_row:table_end_row,
-    cols = 1:ncol(df),
+    cols = seq_len(ncol(df)),
     gridExpand = TRUE,
     stack = TRUE
   )
 
   if (contents_links == TRUE) {
-    for (y in 1:nrow(df)) {
+    for (y in seq_len(nrow(df))) {
       openxlsx::writeFormula(
         wb, tab_name,
         startRow = table_start_row + y,
@@ -92,8 +98,8 @@ create_contents_notes <- function(wb,
           row = 1,
           col = 1,
           text = df[y, 1]
-          )
         )
+      )
     }
   }
 

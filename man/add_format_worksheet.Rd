@@ -11,11 +11,12 @@ add_format_worksheet(
   tab_name,
   heading,
   subtitle_length = 0,
-  num_tables = 1
+  num_tables = 1,
+  border_type = "all_borders"
 )
 }
 \arguments{
-\item{wb}{An openxlsx workbook object.}
+\item{wb}{An \code{openxlsx} workbook object.}
 
 \item{ncol_df}{Number of columns in table.}
 
@@ -31,12 +32,17 @@ characters in a vector.}
 will be under the heading and before the table, default is 0.}
 
 \item{num_tables}{Number of tables in worksheet as integer, default is 1.}
+
+\item{border_type}{String to identify which border type to use, default is
+"all_borders". Use "outline" to have a border surround the table and a border
+for the column names (heading row), use "vertical" to also include vertical
+borders between columns.}
 }
 \value{
-Adds a worksheet to existing openxlsx workbook. The formatting will
+Adds a worksheet to existing \code{openxlsx} workbook. The formatting will
 follow accessibility guidelines.
 }
 \description{
 This function will add a new worksheet with formatting that
-follows accessibility guidelines to an openxlsx workbook.
+follows accessibility guidelines to an \code{openxlsx} workbook.
 }

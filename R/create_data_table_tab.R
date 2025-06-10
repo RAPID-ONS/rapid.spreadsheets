@@ -1,12 +1,12 @@
 #' @title Adds data table worksheet to workbook.
 #'
-#' @description This function adds a data table worksheet to an openxlsx
+#' @description This function adds a data table worksheet to an `openxlsx`
 #' workbook.
 #'
-#' @param wb An openxlsx workbook object.
+#' @param wb An `openxlsx` workbook object.
 #' @param df Data frame containing data to put in data table.
 #' @param tab_name Worksheet name as string, default is "Table_1".
-#' @param heading Table title/ heading as character vector. Vector length
+#' @param heading Table title/heading as character vector. Vector length
 #' should be one unless table title is very long. If length is more than one
 #' text will be split in multiple rows. Default is "Heading".
 #' @param additional_text Character vector containing additional rows of text
@@ -25,8 +25,14 @@
 #' @param two_decimal Vector containing column numbers where values should
 #' be shown with two decimal points. Will also add thousand separator "1,000"
 #' where needed. Optional argument.
+#' @param border_type String to identify which border type to use, default is
+#' "all_borders". Use "outline" to have a border surround the table and a border
+#' for the column names (heading row), use "vertical" to also include vertical
+#' borders between columns.
+#' @param left_align Vector containing column numbers where values should
+#' be left aligned. Optional argument.
 #'
-#' @return Adds a worksheet with data table to existing openxlsx workbook.
+#' @return Adds a worksheet with data table to existing `openxlsx` workbook.
 #'
 #' @import openxlsx
 #'
@@ -42,20 +48,23 @@ create_data_table_tab <- function(wb,
                                   num_char_cols = NA,
                                   no_decimal = NA,
                                   one_decimal = NA,
-                                  two_decimal = NA) {
+                                  two_decimal = NA,
+                                  left_align = NA,
+                                  border_type = "all_borders") {
 
   add_format_worksheet(
     wb, ncol(df), nrow(df),
     tab_name,
     heading,
     length(additional_text),
-    num_tables
+    num_tables,
+    border_type
   )
   heading_length <- length(heading)
   table_start_row <- heading_length + length(additional_text) + 2
   table_end_row <- table_start_row + nrow(df)
 
-  openxlsx::setColWidths(wb, tab_name, 1:ncol(df), column_width)
+  openxlsx::setColWidths(wb, tab_name, seq_len(ncol(df)), column_width)
 
   openxlsx::writeData(
     wb, tab_name,
@@ -77,16 +86,16 @@ create_data_table_tab <- function(wb,
     overwrite_df(wb, df, tab_name, table_start_row, num_char_cols)
   }
 
-  decimals <- list(no_decimal, one_decimal, two_decimal)
+  decimals <- list(no_decimal, one_decimal, two_decimal, left_align)
   s <- create_styles()
-  style <- c(s$no_decimal, s$one_decimal, s$two_decimal)
+  style <- c(s$no_decimal, s$one_decimal, s$two_decimal, s$left_align)
 
   for (i in which(sapply(decimals, is.numeric) == TRUE)) {
 
     openxlsx::addStyle(
       wb, tab_name,
       style = style[[i]],
-      rows = (table_start_row + 1):table_end_row, # first table row is colname
+      rows = (table_start_row + 1):table_end_row, # First table row is colname
       cols = decimals[[i]],
       gridExpand = TRUE,
       stack = TRUE
@@ -99,7 +108,10 @@ create_data_table_tab <- function(wb,
 #' @description Overwrites selected columns that contain both numeric and
 #' character elements.
 #'
-#' @param wb Openxlsx workbook name.
+#' @details Factor columns are converted to character columns before being
+#' converted.
+#'
+#' @param wb `openxlsx` workbook name.
 #' @param df Data frame containing columns with worksheet names and
 #' descriptions.
 #' @param tab_name Worksheet name as string.
@@ -113,35 +125,64 @@ create_data_table_tab <- function(wb,
 
 overwrite_df <- function(wb, df, tab_name, table_start_row, num_char_cols) {
 
-  df_list <- as.list(df)
-  style <- openxlsx::createStyle(halign = "right")
+  for (i in num_char_cols) {
 
-  for (i in seq_along(num_char_cols)) {
+    if (is.factor(df[[i]])) {
+      # Factor column transformations would result in listing factor
+      # levels instead of values, so conversion to character is needed
+      icol <- as.character(df[[i]])
+    } else {
+      icol <- df[[i]]
+    }
 
-    icol <- df_list[[num_char_cols[i]]]
+    x <- suppressWarnings(as.numeric(icol))
+    non_num <- which(is.na(x))
+    num_rows <- which(!is.na(x))
 
-    for (j in seq_along(icol)) {
-
-      if (is.na(suppressWarnings(as.numeric(icol[[j]])))) {
-
-        x <- icol[[j]]
-        openxlsx::addStyle(
-          wb, tab_name,
-          style,
-          rows = j + table_start_row,
-          cols = num_char_cols[i],
-          stack = TRUE
-        )
-
-      } else {
-        x <- as.numeric(icol[[j]])
-      }
+    # If most rows are numeric, overwrite data with numeric and add back
+    # character rows, otherwise overwrite numeric rows only - for efficiency
+    if (length(non_num) < length(icol) / 2) {
 
       openxlsx::writeData(
         wb, tab_name,
         x,
-        startCol = num_char_cols[i],
-        startRow = j + table_start_row
+        startCol = i,
+        startRow = table_start_row + 1
+      )
+
+      if (length(non_num) > 0) {
+
+        for (j in non_num) {
+
+          openxlsx::writeData(
+            wb, tab_name,
+            icol[[j]],
+            startCol = i,
+            startRow = j + table_start_row
+          )
+        }
+      }
+    } else {
+
+      for (j in num_rows) {
+
+        openxlsx::writeData(
+          wb, tab_name,
+          x[[j]],
+          startCol = i,
+          startRow = j + table_start_row
+        )
+      }
+    }
+
+    if (length(non_num) > 0) {
+      # If there are character rows, align them to the right to match numbers
+      openxlsx::addStyle(
+        wb, tab_name,
+        openxlsx::createStyle(halign = "right"),
+        rows = non_num + table_start_row,
+        cols = i,
+        stack = TRUE
       )
     }
   }

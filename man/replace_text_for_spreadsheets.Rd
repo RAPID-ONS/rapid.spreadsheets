@@ -8,13 +8,13 @@ replace_text_for_spreadsheets(replacements, text_file)
 }
 \arguments{
 \item{replacements}{A data frame containing a "replace" column with strings
-to be replaced by strings contained in the "with" column}
+to be replaced by strings contained in the "with" column.}
 
-\item{text_file}{A data frame with a single column of characters}
+\item{text_file}{A data frame with a single column of characters.}
 }
 \value{
-Modified data frame where certain strings were replaced
+Modified data frame where certain strings were replaced.
 }
 \description{
-A function to replaces set strings with specified replacements
+A function to replaces set strings with specified replacements.
 }

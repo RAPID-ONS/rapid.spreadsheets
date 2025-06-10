@@ -13,11 +13,12 @@ create_contents_notes(
   additional_text = c(),
   hyperlinks = NA,
   column_width = c(20, 80, 15),
-  num_tables = 1
+  num_tables = 1,
+  border_type = "all_borders"
 )
 }
 \arguments{
-\item{wb}{An openxlsx workbook object.}
+\item{wb}{An \code{openxlsx} workbook object.}
 
 \item{df}{Data frame containing two or three columns e.g.: worksheet names
 (containing tab names), worksheet descriptions and an optional third column
@@ -36,8 +37,8 @@ text to place above the table, default is empty.}
 
 \item{hyperlinks}{Data frame with two columns:
 \itemize{
-  \item first column as a numeric vector listing rows in df with hyperlinks,
-  \item second column as character vector with url or email addresses.
+\item first column as a numeric vector listing rows in df with hyperlinks,
+\item second column as character vector with url or email addresses.
 }
 The df has to have three columns as hyperlinks will be added to the third
 column. Optional argument.}
@@ -45,11 +46,16 @@ column. Optional argument.}
 \item{column_width}{Width of Excel columns, defaults are: 20, 80 and 15.}
 
 \item{num_tables}{Number of tables in a worksheet, default is 1.}
+
+\item{border_type}{String to identify which border type to use, default is
+"all_borders". Use "outline" to have a border surround the table and a border
+for the column names (heading row), use "vertical" to also include vertical
+borders between columns.}
 }
 \value{
-Adds a new contents/notes worksheet to existing openxlsx workbook.
+Adds a new contents/notes worksheet to existing \code{openxlsx} workbook.
 }
 \description{
-This function adds a contents or notes worksheet to an openxlsx
-workbook.
+This function adds a contents or notes worksheet to an
+\code{openxlsx} workbook.
 }

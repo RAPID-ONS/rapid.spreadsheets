@@ -7,7 +7,7 @@ rapid.spreadsheets package supports creating reference tables that can include:
 * Notes table 
 * Data tables
 
-Aside from data tables, all sheet types support use of internal and external hyperlinks. As rapid.spreadsheets package was built using openxlsx workbooks it provides users with flexibility to add and modify formatting styles using openxlsx functions.
+Aside from data tables, all sheet types support use of internal and external hyperlinks. As rapid.spreadsheets package was built using `openxlsx` workbooks it provides users with flexibility to add and modify formatting styles using `openxlsx` functions.
 
 ## Installation instructions
 

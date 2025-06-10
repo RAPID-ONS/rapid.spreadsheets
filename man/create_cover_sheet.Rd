@@ -17,7 +17,7 @@ create_cover_sheet(
 )
 }
 \arguments{
-\item{wb}{An openxlsx workbook object.}
+\item{wb}{An \code{openxlsx} workbook object.}
 
 \item{text_df}{A data frame containing the cover sheet text in a single
 column.}
@@ -30,9 +30,9 @@ These will be in bold and have increased row height. Optional argument.}
 
 \item{hyperlinks}{Data frame with two columns:
 \itemize{
-  \item first as numeric vector listing rows which should have links,
-  \item second as character vector with url or email addresses.
-  }
+\item first as numeric vector listing rows which should have links,
+\item second as character vector with url or email addresses.
+}
 Optional argument.}
 
 \item{rows_to_bold}{A numeric vector listing rows to bold. Optional
@@ -40,8 +40,8 @@ argument.}
 
 \item{replacements}{Data frame with two columns:
 \itemize{
-  \item "replace" specifying strings to replace
-  \item "with" specifying what to replace the strings with
+\item "replace" specifying strings to replace
+\item "with" specifying what to replace the strings with
 }
 Optional argument.}
 
@@ -52,10 +52,10 @@ Default is 30.}
 Default is 130.}
 }
 \value{
-Adds a cover sheet worksheet to existing openxlsx workbook.
+Adds a cover sheet worksheet to existing \code{openxlsx} workbook.
 }
 \description{
-This function adds a Cover sheet worksheet to an openxlsx
+This function adds a Cover sheet worksheet to an \code{openxlsx}
 workbook.
 }
 \examples{
