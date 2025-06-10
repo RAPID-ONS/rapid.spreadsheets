@@ -33,11 +33,34 @@ test_that("Fonts in text styles have expected sizes", {
   }
 })
 
+test_that("Fonts in text styles are left aligned", {
+  s_names <-  c("text", "bold_text", "heading", "subheadings", "table_header",
+                "wrap_text", "centre")
+  for (i in seq(s_names)){
+    expect_equal(s[[s_names[i]]]$halign, "left", ignore_attr = TRUE)
+  }
+})
+
 test_that("Bold styles are bold", {
   s_names <-  c("bold_text", "heading", "subheadings", "table_header")
   for (i in seq(s_names)){
     expect_equal(s[[s_names[i]]]$fontDecoration, "BOLD", ignore_attr = TRUE)
   }
+})
+
+test_that("Table header style is top aligned", {
+  expect_equal(s[["table_header"]]$valign, "top", ignore_attr = TRUE)
+})
+
+test_that("Text styles are wrapped", {
+  s_names <-  c("table_header", "wrap_text", "centre")
+  for (i in seq(s_names)){
+    expect_equal(s[[s_names[i]]]$wrapText, TRUE, ignore_attr = TRUE)
+  }
+})
+
+test_that("Centre style is centrally aligned", {
+  expect_equal(s[["centre"]]$valign, "center", ignore_attr = TRUE)
 })
 
 test_that("All borders style has thin borders on all sides", {
