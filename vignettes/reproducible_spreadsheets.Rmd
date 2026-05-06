@@ -179,6 +179,7 @@ For sheets containing actual data tables we can use standard `data.frames` with 
 
 ```{r}
 df <- data.frame(
+  Year = rep(2026, 8),
   Sex = c(rep("males", 4), rep("females", 4)),
   "Age group" = rep("10 to 14", 8),
   Deaths = as.character(c(seq(6.25, 7.75, 0.25), 2222.22)),
@@ -198,7 +199,8 @@ create_data_table_tab(
   num_char_cols = c(3, 4),
   no_decimal = 4,
   two_decimal = 3,
-  border_type = "vertical"
+  border_type = "vertical",
+  left_align = 1
 )
 openXL(wb)
 ```
