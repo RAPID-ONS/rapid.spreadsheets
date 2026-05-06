@@ -28,3 +28,6 @@ To view vignettes (tutorial) on how to use the package, run the following code i
 ```{r}
 browseVignettes("rapid.spreadsheets")
 ```
+
+## Maintainers:
+Data Science team in National Statistician's Office (NSO) Analysis Unit (DASCH_RAPID@ons.gov.uk)
