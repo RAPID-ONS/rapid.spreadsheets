@@ -127,6 +127,7 @@ We can also add additional subtitles to our contents sheet if we like to. To do 
 ```{r}
 subtitles_vector <- c("sub one", "sub two", "sub three")
 ```
+The cell borders in the table can be specified using the `border_type` argument. The default is "all_borders" but you can use "outline" to have a border surround the table and a border for the column names (heading row) or use "vertical" to also include vertical borders between columns.
 
 To create contents worksheet we use `create_content_notes` function. Note only `wb` and `df` are required arguments, the others are optional.
 ```{r eval = FALSE}
@@ -134,7 +135,8 @@ create_contents_notes(
   wb = wb,
   df = contents_text,
   additional_text = subtitles_vector,
-  hyperlinks = hyperlinks
+  hyperlinks = hyperlinks,
+  border_type = "vertical"
 )
 openXL(wb)
 ```
@@ -157,7 +159,7 @@ notes_text <- read.csv(
   check.names = FALSE)
 notes_text
 ```
-When using `create_content_notes` for a sheet different than contents, we need to change default `tab_name` to the sheet name we want to use and `heading` to the title we want to use. We also need to set `content_links` argument to `FALSE` - otherwise it will treat the values in the first column as names linking to respective tabs of the Excel document.
+When using `create_content_notes` for a sheet different than contents, we need to change default `tab_name` to the sheet name we want to use and `heading` to the title we want to use. We also need to set `content_links` argument to `FALSE` - otherwise it will treat the values in the first column as names linking to respective tabs of the Excel document. If we don't give the `border_type` argument then the default argument "all_borders" is used.
 
 ```{r eval = FALSE}
 create_contents_notes(
@@ -186,7 +188,7 @@ df <- data.frame(
 df
 ```
 
-You can set up desired formatting styles for numeric columns. For instance, if you have columns that contain characters as well as numbers (e.g. `[x]`), you will get "Numbers stored as text" warning in your Excel document. To avoid this, specify the affected column numbers as a numeric vector to `num_char_cols` argument. You can also specify column numbers that should be displayed with no decimal points, one decimal point etc. All styles will show thousands with a comma if they are passed to one of the numerical formatting arguments.
+You can set up desired formatting styles for numeric columns. For instance, if you have columns that contain characters as well as numbers (e.g. `[x]`), you will get "Numbers stored as text" warning in your Excel document. To avoid this, specify the affected column numbers as a numeric vector to `num_char_cols` argument. You can also specify column numbers that should be displayed with no decimal points, one decimal point etc. All styles will show thousands with a comma if they are passed to one of the numerical formatting arguments. As for the contents and note sheets, there is an argument for `border_type` for which the default is "all_borders" with options for "outline" or "vertical". We can also left align cells using the `left_align` argument. This should be used to left align columns in a table that are numeric and which are row labels rather than data values such year or week number. This is an optional argument which is given as a vector of column numbers.
 
 ```{r eval = FALSE}
 create_data_table_tab(
@@ -195,7 +197,8 @@ create_data_table_tab(
   tab_name = "Table_1",
   num_char_cols = c(3, 4),
   no_decimal = 4,
-  two_decimal = 3
+  two_decimal = 3,
+  border_type = "vertical"
 )
 openXL(wb)
 ```
@@ -228,4 +231,5 @@ addStyle(wb,
 openXL(wb)
 ```
 
+The function `create_styles()` returns a list of common openxlsx styles that can be used with the `addStyle()` function to add styles.
 
