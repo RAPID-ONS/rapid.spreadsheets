@@ -127,7 +127,7 @@ We can also add additional subtitles to our contents sheet if we like to. To do 
 ```{r}
 subtitles_vector <- c("sub one", "sub two", "sub three")
 ```
-The cell borders in the table can be specified using the `border_type` argument. The default is "vertical" which gives borders around the column names (heading row) and vertical border between columns.You can use "outline" to have a border surround the table and a border for the column names (heading row), or use "all_borders" to have borders around all cells.
+The cell borders in the table can be specified using the `border_type` argument. The default is "vertical" which gives borders around the column names (heading row) and vertical border between columns. You can use "all_borders" to have borders around all cells, or use "outline" to have a border surround the table and a border for the column names (heading row).
 
 To create contents worksheet we use `create_content_notes` function. Note only `wb` and `df` are required arguments, the others are optional.
 ```{r eval = FALSE}
@@ -192,7 +192,7 @@ df
 
 You can set up desired formatting styles for numeric columns. For instance, if you have columns that contain characters as well as numbers (e.g. `[x]`), you will get "Numbers stored as text" warning in your Excel document. To avoid this, specify the affected column numbers as a numeric vector to `num_char_cols` argument. You can also specify column numbers that should be displayed with no decimal points, one decimal point etc. All styles will show thousands with a comma if they are passed to one of the numerical formatting arguments. 
 
-As for the contents and note sheets, there is an argument for `border_type` which has a default value of "vertical" with options for "outline" or "all_borders". In this example as we have not specified the argument vertical borders will be used. We can also left align cells using the `left_align` argument. This should be used to left align columns in a table that are numeric and which are row labels rather than data values, such year or week number. This is an optional argument which is given as a vector of column numbers.
+As for the contents and note sheets, there is an argument for `border_type` which has a default value of "vertical" with options for "all_borders" or "outline". In this example as we have not specified the argument vertical borders will be used. We can also left align cells using the `left_align` argument. This should be used to left align columns in a table that are numeric and which are row labels rather than data values, such as year or week number. This is an optional argument which is given as a vector of column numbers.
 
 ```{r eval = FALSE}
 create_data_table_tab(
