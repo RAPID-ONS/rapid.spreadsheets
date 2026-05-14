@@ -57,8 +57,8 @@ where needed. Optional argument.}
 \item{left_align}{Vector containing column numbers where values should
 be left aligned. Optional argument.}
 
-\item{border_type}{String to identify which border type to use; default is
-"vertical" which gives borders for the column names (heading row) and also
+\item{border_type}{String to identify which border type to use; the default
+is "vertical" which gives borders for the column names (heading row) and also
 vertical borders between columns. Use "all_borders" to have borders around
 all cells, or "outline" to have a border surround the table and a border
 for the column names (heading row).}

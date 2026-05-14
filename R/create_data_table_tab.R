@@ -25,8 +25,8 @@
 #' @param two_decimal Vector containing column numbers where values should
 #' be shown with two decimal points. Will also add thousand separator "1,000"
 #' where needed. Optional argument.
-#' @param border_type String to identify which border type to use; default is
-#' "vertical" which gives borders for the column names (heading row) and also
+#' @param border_type String to identify which border type to use; the default
+#' is "vertical" which gives borders for the column names (heading row) and also
 #' vertical borders between columns. Use "all_borders" to have borders around
 #' all cells, or "outline" to have a border surround the table and a border
 #' for the column names (heading row).
