@@ -30,4 +30,4 @@ browseVignettes("rapid.spreadsheets")
 ```
 
 ## Maintainers:
-Data Science team in National Statistician's Office (NSO) Analysis Unit (DASCH_RAPID@ons.gov.uk)
+Data Science team in the National Statistician's Office (NSO) Analysis Unit (DASCH_RAPID@ons.gov.uk)
