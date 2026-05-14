@@ -7,7 +7,8 @@ test_that("Creating contents sheet with default options and a single column", {
   expect_equal(wb$sheet_names, "Contents")
   expect_equal(
     read.xlsx(wb, 1, colNames = FALSE),
-    data.frame(X1 = c("Table of contents", "This worksheet contains one table", "Name"))
+    data.frame(
+      X1 = c("Table of contents", "This worksheet contains one table", "Name"))
     )
   expect_identical(is.list(wb$rowHeights[[1]]), TRUE)
   expect_equal(wb$colWidths[[1]], c("20", "20"), ignore_attr = TRUE)
@@ -179,5 +180,5 @@ test_that("Function runs as expected with third column with hyperlinks", {
       "address"],
     data.frame(address = c("A4", "A5", "A6", "C6", "A7", "C7")),
     ignore_attr = TRUE
-    )
+  )
 })

@@ -1,6 +1,6 @@
 test_that("Basic table is created with default values", {
   wb <- openxlsx::createWorkbook()
-  df <- data.frame(a = c("a","b","c"), d = c(1, 2, 3))
+  df <- data.frame(a = c("a", "b", "c"), d = c(1, 2, 3))
   create_data_table_tab(wb, df)
 
   expect_equal(wb$sheet_names, "Table_1")
@@ -24,7 +24,7 @@ test_that("Basic table is created with default values", {
 
 test_that("Numeric values stored as numeric even if mixed with text rows", {
   wb <- openxlsx::createWorkbook()
-  df <- data.frame(a = c("a","b","c"), d = c(1, 2, 3), r = c(2.3, 4.1, "x"))
+  df <- data.frame(a = c("a", "b", "c"), d = c(1, 2, 3), r = c(2.3, 4.1, "x"))
   create_data_table_tab(wb, df, num_char_cols = 3)
   fl <- tempfile(fileext = ".xlsx")
   openxlsx::saveWorkbook(wb, file = fl, overwrite = TRUE)
@@ -40,7 +40,7 @@ test_that("Numeric values stored as numeric even if mixed with text rows", {
 test_that("Numeric conversion works in factor columns", {
   wb <- openxlsx::createWorkbook()
   df <- data.frame(
-    a = c("a","b","c"),
+    a = c("a", "b", "c"),
     d = c(1, 2, 3),
     r = as.factor(c(2.3, 4.1, "x"))
   )
@@ -59,7 +59,7 @@ test_that("Numeric conversion works in factor columns", {
 test_that("Numeric conversion works in factor columns and character col", {
   wb <- openxlsx::createWorkbook()
   df <- data.frame(
-    a = c("a","b","c"),
+    a = c("a", "b", "c"),
     d = c("x", "x", 3),
     r = as.factor(c(2.3, 4.1, "x"))
   )
@@ -84,7 +84,7 @@ test_that("Numeric conversion works in factor columns and character col", {
 test_that("Numeric conversion works when there is more non-numeric rows", {
   wb <- openxlsx::createWorkbook()
   df <- data.frame(
-    a = c("a","b","c", "d", "e"),
+    a = c("a", "b", "c", "d", "e"),
     d = c(1, 2, 3, 4, 5),
     r = as.factor(c(2.3, 4.1, "x", "y", "z"))
   )
