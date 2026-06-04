@@ -12,7 +12,7 @@ add_format_worksheet(
   heading,
   subtitle_length = 0,
   num_tables = 1,
-  border_type = "all_borders"
+  border_type = "vertical"
 )
 }
 \arguments{
@@ -33,10 +33,11 @@ will be under the heading and before the table, default is 0.}
 
 \item{num_tables}{Number of tables in worksheet as integer, default is 1.}
 
-\item{border_type}{String to identify which border type to use, default is
-"all_borders". Use "outline" to have a border surround the table and a border
-for the column names (heading row), use "vertical" to also include vertical
-borders between columns.}
+\item{border_type}{String to identify which border type to use; the default
+is "vertical" which gives borders for the column names (heading row) and also
+vertical borders between columns. Use "all_borders" to have borders around
+all cells, or "outline" to have a border surround the table and a border
+for the column names (heading row).}
 }
 \value{
 Adds a worksheet to existing \code{openxlsx} workbook. The formatting will

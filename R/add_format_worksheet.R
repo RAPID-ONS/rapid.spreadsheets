@@ -13,10 +13,11 @@
 #' @param subtitle_length Number of rows for subtitles and extra notes that
 #' will be under the heading and before the table, default is 0.
 #' @param num_tables Number of tables in worksheet as integer, default is 1.
-#' @param border_type String to identify which border type to use, default is
-#' "all_borders". Use "outline" to have a border surround the table and a border
-#' for the column names (heading row), use "vertical" to also include vertical
-#' borders between columns.
+#' @param border_type String to identify which border type to use; the default
+#' is "vertical" which gives borders for the column names (heading row) and also
+#' vertical borders between columns. Use "all_borders" to have borders around
+#' all cells, or "outline" to have a border surround the table and a border
+#' for the column names (heading row).
 #'
 #' @return Adds a worksheet to existing `openxlsx` workbook. The formatting will
 #' follow accessibility guidelines.
@@ -32,7 +33,7 @@ add_format_worksheet <- function(wb,
                                  heading,
                                  subtitle_length = 0,
                                  num_tables = 1,
-                                 border_type = "all_borders") {
+                                 border_type = "vertical") {
 
   if (num_tables > 1) {
     stop("Avoid worksheets with multiple tables. This function cannot format

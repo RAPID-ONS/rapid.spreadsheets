@@ -23,10 +23,11 @@
 #' column. Optional argument.
 #' @param column_width Width of Excel columns, defaults are: 20, 80 and 15.
 #' @param num_tables Number of tables in a worksheet, default is 1.
-#' @param border_type String to identify which border type to use, default is
-#' "all_borders". Use "outline" to have a border surround the table and a border
-#' for the column names (heading row), use "vertical" to also include vertical
-#' borders between columns.
+#' @param border_type String to identify which border type to use; the default
+#' is "vertical" which gives borders for the column names (heading row) and also
+#' vertical borders between columns. Use "all_borders" to have borders around
+#' all cells, or "outline" to have a border surround the table and a border
+#' for the column names (heading row).
 #'
 #' @return Adds a new contents/notes worksheet to existing `openxlsx` workbook.
 #'
@@ -43,7 +44,7 @@ create_contents_notes <- function(wb,
                                   hyperlinks = NA,
                                   column_width = c(20, 80, 15),
                                   num_tables = 1,
-                                  border_type = "all_borders") {
+                                  border_type = "vertical") {
 
   add_format_worksheet(
     wb, ncol(df), nrow(df),

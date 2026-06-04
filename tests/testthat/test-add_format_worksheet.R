@@ -38,7 +38,6 @@ test_that("Worksheet formatting style is set as expected", {
     tab_name = "One",
     heading = "Title"
   )
-  cells_with_borders <- c("A3", "B3", "A4", "B4", "A5", "B5")
   fl <- tempfile(fileext = ".xlsx")
   openxlsx::saveWorkbook(wb, file = fl, overwrite = TRUE)
   formats <- tidyxl::xlsx_formats(fl)
@@ -67,6 +66,50 @@ test_that("Worksheet formatting style is set as expected", {
     data.frame(address = c("A1")),
     ignore_attr = TRUE
   )
+
+  expect_equal(
+    x[x$local_format_id %in% which(formats$local$border$right$style == "thin"),
+      "address"],
+    data.frame(address = c("A3", "B3", "A4", "B4", "A5", "B5")),
+    ignore_attr = TRUE
+  )
+
+  expect_equal(
+    x[x$local_format_id %in% which(formats$local$border$left$style == "thin"),
+      "address"],
+    data.frame(address = c("A3", "A4", "A5")),
+    ignore_attr = TRUE
+  )
+  expect_equal(
+    x[x$local_format_id %in% which(formats$local$border$top$style == "thin"),
+      "address"],
+    data.frame(address = c("A3", "B3")),
+    ignore_attr = TRUE
+  )
+  expect_equal(
+    x[x$local_format_id %in% which(formats$local$border$bottom$style == "thin"),
+      "address"],
+    data.frame(address = c("A3", "B3", "A5", "B5")),
+    ignore_attr = TRUE
+  )
+})
+
+
+test_that("Worksheet borders as expected for non default border_type", {
+  wb <- openxlsx::createWorkbook()
+  add_format_worksheet(
+    wb,
+    ncol_df = 2,
+    nrow_df = 2,
+    tab_name = "One",
+    heading = "Title",
+    border_type = "all_borders"
+  )
+  fl <- tempfile(fileext = ".xlsx")
+  openxlsx::saveWorkbook(wb, file = fl, overwrite = TRUE)
+  formats <- tidyxl::xlsx_formats(fl)
+  x <- tidyxl::xlsx_cells(fl)
+  cells_with_borders <- c("A3", "B3", "A4", "B4", "A5", "B5")
 
   expect_equal(
     x[x$local_format_id %in% which(formats$local$border$right$style == "thin"),
