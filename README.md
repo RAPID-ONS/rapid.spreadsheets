@@ -1,5 +1,13 @@
 # RAPID spreadsheets
 
+> [!WARNING]
+>
+> This repository is now maintained in the ONS Digital GitHub organisation.
+>
+> https://github.com/ONSdigital/rapid.spreadsheets
+>
+> This repo is archived / no longer actively maintained.  Please direct all issues and pull requests to the new location.
+
 This package helps create reproducible spreadsheets that meet [Analysis Function accessibility guidelines](https://analysisfunction.civilservice.gov.uk/policy-store/releasing-statistics-in-spreadsheets/). It was designed to help government analysts to produce data tables for their Reproducible Analytical Pipelines. 
 rapid.spreadsheets package supports creating reference tables that can include:
 * Cover sheet
