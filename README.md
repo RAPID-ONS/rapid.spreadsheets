@@ -4,7 +4,7 @@
 >
 > https://github.com/ONSdigital/rapid.spreadsheets
 >
-> This repo is archived / no longer actively maintained.  Please direct all issues and pull requests to the new location.
+> This repo is archived / no longer actively maintained. Please use the new repository going forward.
 
 # RAPID spreadsheets
 
